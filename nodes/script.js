@@ -1,6 +1,3 @@
-var width = window.innerWidth,
-    height = window.innerHeight
-
 var group = {
   window: 0,
   array: 1,
@@ -24,7 +21,6 @@ var nodes = [
   {name:"value", display: 3}, //5
   {name:"function"}, //6
 ]
-
 var links = [
   {source: 0, target: 1},
   {source: 1, target: 2},
@@ -35,9 +31,21 @@ var links = [
   {source: 6, target: 1},
 ]
 
+function deepCopyLinks(list) {
+  return list.map(l => Object.assign({}, l))
+}
+
 var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
+  .attr("width", window.innerWidth)
+  .attr("height", window.innerHeight)
+
+window.addEventListener('resize', () => {
+  d3.select("svg")
+    .attr("width", window.innerWidth)
+    .attr("height", window.innerHeight)
+
+  force.size([window.innerWidth, window.innerHeight])
+})
 
 var color = d3.scale.category20()
 
@@ -45,17 +53,12 @@ var force = d3.layout.force()
     .gravity(0.05)
     .distance(d => size[d.target.name] * 50)
     .charge(-100)
-    .size([width, height])
+    .size([window.innerWidth, window.innerHeight])
 
 nodes.forEach(n => {
-  n.x = Math.random() * 100 + width / 2
-  n.y = Math.random() * 100 + height / 2
+  n.x = Math.random() * 100 + window.innerWidth / 2
+  n.y = Math.random() * 100 + window.innerHeight / 2
 })
-
-force
-    .nodes(nodes)
-    .links(links)
-    .start()
 
 var link = svg.selectAll(".link")
 
@@ -70,16 +73,42 @@ force.on("tick", function() {
   node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")" })
 })
 
-function update() {
-  link = link.data(links)
-  link.enter().append("line")
-      .attr("class", "link")
-  link.exit().remove()
+function filterActiveLinks(nodes, links) {
+  console.log('filterActiveLinks');
+  console.table(links)
 
-  node = node.data(nodes)
+  var linkSourceMatches = links.filter(l => {
+    return nodes.reduce((memo, n, i) => {
+      return memo || l.source === i || l.source === n
+    }, false)
+  })
+
+  var linkParentMatches = linkSourceMatches.filter(l => {
+    return nodes.reduce((memo, n, i) => {
+      return memo || l.target === i || l.target === n
+    }, false)
+  })
+
+  console.table(linkParentMatches)
+  return linkParentMatches
+}
+
+
+function update(i) {
+  console.log('update')
+  console.table(links)
+
+  let activeNodes = nodes.slice(0,i)
+  let activeLinks = filterActiveLinks(activeNodes, deepCopyLinks(links))
+
+  console.log('after filter')
+  console.table(links)
+
+  node = node.data(activeNodes)
   let g = node.enter().append("g")
   g.attr("class", "node")
    .call(force.drag)
+
 
   g.append("circle")
     .attr("class", "node-circle")
@@ -87,19 +116,39 @@ function update() {
     .style("fill", (d) => color(group[d.name]))
 
   g.append("text")
-      .attr("dx", (d) => 5 + 4 * size[d.name])
-      .attr("dy", ".35em")
-      .text(d => d.display === undefined ? d.name : d.display)
+    .attr("dx", (d) => 5 + 4 * size[d.name])
+    .attr("dy", ".35em")
+    .text(d => d.display === undefined ? d.name : d.display)
+
+  link = link.data(activeLinks)
+  link.enter().append("line")
+      .attr("class", "link")
+  link.exit().remove()
 
   node.exit().remove()
 
-  force.start()
+  force
+    .nodes(activeNodes)
+    .links(activeLinks)
+    .start()
 }
 
-update()
+update(2)
+console.log('main')
+console.table(links)
 
-setTimeout(() => {
-  nodes.push({name:"function"})
-  links.push({source: 0, target: 7})
-  update()
-}, 1000)
+;(function() {
+  var KEY_RIGHT = 39
+  var KEY_LEFT = 37
+  var nodePosition = 2
+
+  window.addEventListener('keyup', e => {
+    if(e.keyCode === KEY_RIGHT) nodePosition += 1
+    if(e.keyCode === KEY_LEFT) nodePosition -= 1
+
+    nodePosition = Math.max(0, nodePosition)
+    nodePosition = Math.min(nodes.length, nodePosition)
+
+    update(nodePosition);
+  })
+})()
