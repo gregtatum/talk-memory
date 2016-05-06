@@ -1,5 +1,6 @@
 const { GROUP, SIZE } = require('./constants')
 const { nodes, links } = require('./actions/demo')
+
 function setupD3() {
   var svg = d3.select("body")
     .append("svg")
@@ -14,14 +15,6 @@ function setupD3() {
       .charge(-100)
       .size([window.innerWidth, window.innerHeight])
 
-  force.on("tick",() => {
-    node.attr("transform", (d) => `translate(${d.x},"${d.y})`)
-    link.attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y)
-  })
-
   var link = svg.selectAll(".link")
   var node = svg.selectAll(".node")
 
@@ -29,7 +22,7 @@ function setupD3() {
 }
 
 function filterActiveLinks(nodes, links) {
-  links
+  return links
     .filter(l => {
       return nodes.reduce((memo, n, i) => {
         return memo || l.source === i || l.source === n
@@ -40,11 +33,9 @@ function filterActiveLinks(nodes, links) {
         return memo || l.target === i || l.target === n
       }, false)
     })
-
-  return linkParentMatches
 }
 
-function addEventListeners({nodes, force}) {
+function addEventListeners(step, {nodes, force}) {
   var KEY_RIGHT = 39
   var KEY_LEFT = 37
   var nodePosition = 2
@@ -56,7 +47,7 @@ function addEventListeners({nodes, force}) {
     nodePosition = Math.max(0, nodePosition)
     nodePosition = Math.min(nodes.length, nodePosition)
 
-    update(nodePosition);
+    step(nodePosition);
   })
 
   window.addEventListener('resize', () => {
@@ -68,45 +59,61 @@ function addEventListeners({nodes, force}) {
   })
 }
 
-function updateFn({nodes}) {
-  return function update(i) {
+function stepFn(nodes, current) {
+  return function step(i) {
     const activeNodes = nodes.slice(0, i)
     const activeLinks = filterActiveLinks(activeNodes, deepCopyLinks(links))
 
-    node = node.data(activeNodes)
-    const g = node.enter().append("g")
+    current.node = current.node.data(activeNodes)
+    const g = current.node.enter().append("g")
     g.attr("class", "node")
-      .call(force.drag)
+      .call(current.force.drag)
 
     g.append("circle")
       .attr("class", "node-circle")
       .attr("r", d => 5 * SIZE[d.name])
-      .style("fill", d => color(GROUP[d.name]))
+      .style("fill", d => current.color(GROUP[d.name]))
 
     g.append("text")
       .attr("dx", d => 5 + 4 * SIZE[d.name])
       .attr("dy", ".35em")
       .text(d => d.display === undefined ? d.name : d.display)
 
-    link = link.data(activeLinks)
-    link.enter().append("line")
+    current.link = current.link.data(activeLinks)
+    current.link.enter().append("line")
         .attr("class", "link")
 
-    node.exit().remove()
-    link.exit().remove()
+    current.node.exit().remove()
+    current.link.exit().remove()
 
     // Restart force graph
-    force
+    current.force
       .nodes(activeNodes)
       .links(activeLinks)
       .start()
   }
 }
 
+function deepCopyLinks(list) {
+ return list.map(l => Object.assign({}, l))
+}
+
+function setupUpdate (current) {
+  current.force.on("tick", () => {
+    current.node.attr("transform", (d) => `translate(${d.x},${d.y})`)
+    current.link.attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y)
+  })
+}
+
 function main() {
-  const { svg, color, force, link, node } = setupD3()
-  addEventListeners({ nodes, force })
-  const update = updateFn()
+  const current = setupD3()
+  const { svg, color, force, link, node } = current
+  setupUpdate(current)
+  const step = stepFn(nodes, current)
+  addEventListeners(step, { nodes, force })
 }
 
 main();

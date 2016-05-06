@@ -1,4 +1,4 @@
-exports.group = Object.freeze({
+exports.GROUP = Object.freeze({
   window: 0,
   array: 1,
   object: 2,
@@ -6,7 +6,7 @@ exports.group = Object.freeze({
   value: 4
 })
 
-exports.size = Object.freeze({
+exports.SIZE = Object.freeze({
   window: 4,
   function: 3,
   array: 2,
