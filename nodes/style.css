@@ -1,0 +1,44 @@
+body, html {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  overflow:hidden;
+}
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+.link {
+  user-select: none;
+  stroke: #ccc;
+}
+
+.node text {
+  user-select: none;
+  font: 10px sans-serif;
+}
+svg text::selection {
+    background: none;
+}
+.halfscreen {
+  position:absolute;
+  top:0;
+  width:50%;
+  height:100%;
+  border: 1px solid #000;
+}
+.node {
+  left:0;
+  width:60%;
+}
+.editor {
+  left:60%;
+  width:40%;
+}
+.highlighted-line {
+  background-color: #ff8;
+}
+.CodeMirror {
+  height: 100%;
+}

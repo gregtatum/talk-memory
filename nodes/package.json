@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "budo src/main.js --serve bundle.js",
+    "build": "browserify src/main.js -o bundle.js -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }

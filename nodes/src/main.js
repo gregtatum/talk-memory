@@ -1,20 +1,25 @@
 // const { nodes, links } = require('./actions/demo')
-const { GROUP, SIZE } = require('./constants')
+const { GROUP, SIZE, LENGTH } = require('./constants')
 const demo = require('./actions/create-ten-elements')
 const actionStepper = require('./action-stepper')
+const startEditor = require('./editor')
 
 ;(function() {
-  const graph = new MemoryGraph(demo)
+  const graph = new MemoryGraph(demo.steps)
+  graph.editor = startEditor(demo.code)
+
   setupForceTick(graph)
   addKeyboardListener(graph)
-  addResizeListener(graph.force)
+  addResizeListener(graph.force, graph.el)
 })()
 
 function MemoryGraph(stepsJson) {
-  this.svg = d3.select("body")
+  const el = document.querySelector('.node')
+  this.el = el
+  this.svg = d3.select(".node")
     .append("svg")
-    .attr("width", window.innerWidth)
-    .attr("height", window.innerHeight)
+    .attr("width", el.offsetWidth)
+    .attr("height", el.offsetHeight)
 
   this.color = d3.scale.category20()
 
@@ -22,7 +27,7 @@ function MemoryGraph(stepsJson) {
       .gravity(0.05)
       .distance(d => SIZE[d.target.name] * 50)
       .charge(-100)
-      .size([window.innerWidth, window.innerHeight])
+      .size([el.offsetWidth, el.offsetHeight])
 
   this.$link = this.svg.append("g").selectAll(".link")
   this.$node = this.svg.append("g").selectAll(".node")
@@ -31,9 +36,10 @@ function MemoryGraph(stepsJson) {
   this.stepsJson = stepsJson
 }
 
-function runStep({stepsJson, nodes, links}, i) {
-  stepsJson[i].forEach(([action, value]) => {
-    actionStepper[action](nodes, links, value)
+function runStep(graph, i) {
+  graph.editor.getAllMarks().forEach(mark => mark.clear())
+  graph.stepsJson[i].forEach(([action, value]) => {
+    actionStepper[action](graph, value)
   })
 }
 
@@ -72,22 +78,18 @@ function addKeyboardListener(graph) {
   })
 }
 
-function addResizeListener (force) {
+function addResizeListener (force, el) {
   window.addEventListener('resize', () => {
     d3.select("svg")
-      .attr("width", window.innerWidth)
-      .attr("height", window.innerHeight)
+      .attr("width", el.offsetWidth)
+      .attr("height", el.offsetHeight)
 
-    force.size([window.innerWidth, window.innerHeight])
+    force.size([el.offsetWidth, el.offsetHeight])
   })
 }
 
 function updateView(graph) {
-  const { force, color, nodes, links } = graph
-
-  // Remove all elements
-  // graph.$node.children().remove()
-  // graph.$link.children().remove()
+  const { force, color, nodes, links, el } = graph
 
   // Update the graph's selections with the changed data
   const $node = graph.$node.data(nodes)
@@ -96,7 +98,7 @@ function updateView(graph) {
   graph.$link = $link
 
   // Update DOM nodes' base group
-  $node.enter().append("g")
+  let enter = $node.enter().append("g")
   $link.enter().append("line")
   $node.exit().remove()
   $link.exit().remove()
@@ -113,7 +115,9 @@ function updateView(graph) {
   $node.append("text")
     .attr("dx", d => 5 + 4 * SIZE[d.name])
     .attr("dy", ".35em")
-    .text(d => d.display === undefined ? d.name : d.display)
+    // Priority order for text nodes, allow them to be renamed, or use the
+    // display name. If none of those exist just use the node name type.
+    .text(d => d.rename || d.display || d.name)
 
   $link.attr("class", "link")
       .attr("stroke-dasharray", ({dashed}) => dashed ? "5, 5" : false)
@@ -123,10 +127,12 @@ function updateView(graph) {
     .nodes(nodes)
     .links(links)
     .friction(0.8)
-    .charge(-30)
-    // .linkStrength(0.1)
-    // .linkDistance(window.innerHeight / 10)
-    // .gravity(0.1)
+    .charge(-600)
+    .gravity(0.1)
+    .linkDistance(d => {
+      return LENGTH[d.target.name] * el.offsetHeight / 60
+    })
+    // .linkStrength(0.01)
     // .theta(0.8)
     // .alpha(0.1)
     .start()

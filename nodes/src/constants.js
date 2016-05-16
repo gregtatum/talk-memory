@@ -15,3 +15,12 @@ exports.SIZE = Object.freeze({
   object: 2,
   value: 1
 })
+
+exports.LENGTH = Object.freeze({
+  window: 10,
+  callStack: 10,
+  function: 10,
+  array: 2,
+  object: 2,
+  value: 0.3
+})

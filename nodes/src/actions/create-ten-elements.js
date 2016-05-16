@@ -1,18 +1,37 @@
-module.exports = [
+exports.code = `function createTenElements() {
+  var array = [];
+
+  for(var i=0; i < 10; i++) {
+    array[i] = i;
+  }
+
+  return array;
+}
+
+var myArray = createTenElements()
+`
+
+exports.steps = [
   [
     ["addNode", {name: "window", id: "window"}],
     ["addNode", {name: "callStack", id: "callStack"}],
     ["addLink", ["window", "callStack", "dashed"]],
   ],
   [
-    ["addNode", {display: "createTenElements()", name: "function", id: "createTenElements()"}],
-    ["addLink", ["callStack", "createTenElements()"]],
+    ["highlight", [1, 9]]
+  ],
+  [
+    ["addNode", {display: "createTenElements", name: "function", id: "createTenElements"}],
+    ["addLink", ["callStack", "createTenElements"]],
+    ["highlight", ["11:15", "11:34"]]
   ],
   [
     ["addNode", {name: "array", id: "array"}],
-    ["addLink", ["createTenElements()", "array"]],
+    ["addLink", ["createTenElements", "array"]],
+    ["highlight", ["2:3", "2:18"]]
   ],
   [
+    ["highlight", [4, 6]],
     ["addNode", {display: "0", name: "value", id: "array-0"}],
     ["addNode", {display: "1", name: "value", id: "array-1"}],
     ["addNode", {display: "2", name: "value", id: "array-2"}],
@@ -35,23 +54,14 @@ module.exports = [
     ["addLink", ["array", "array-9"]],
   ],
   [
-    ["removeNode", "createTenElements()"],
-    ["removeLink", ["callStack", "createTenElements()"]],
-    ["removeLink", ["createTenElements()", "array"]],
+    ["highlight", 8],
+  ],
+  [
+    ["removeNode", "createTenElements"],
+    ["removeLink", ["callStack", "createTenElements"]],
+    ["removeLink", ["createTenElements", "array"]],
     ["addLink", ["window", "array"]],
+    ["rename", ["array", "myArray"]],
+    ["highlight", ["11:1", "11:12"]]
   ]
 ]
-
-const code = `
-function createTenElements() {
-  var array = [];
-
-  for(var i=0; i < 10; i++) {
-    array[i] = i;
-  }
-
-  return array;
-}
-
-var myArray = createTenElements()
-`
