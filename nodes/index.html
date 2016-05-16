@@ -14,17 +14,21 @@
     overflow:hidden;
   }
   .link {
+    user-select: none;
     stroke: #ccc;
   }
 
   .node text {
-    pointer-events: none;
+    user-select: none;
     font: 10px sans-serif;
   }
-
+  svg text::selection {
+      background: none;
+  }
   </style>
   <body>
-    <script src="//d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="//d3js.org/d3.v3.min.js"></script> -->
+    <script src="//d3js.org/d3.v3.js"></script>
     <script src="bundle.js"></script>
   </body>
 
