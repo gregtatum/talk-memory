@@ -16,7 +16,17 @@ body, html {
 
 .node text {
   user-select: none;
-  font: 10px sans-serif;
+  font-size: 10px;
+  font-family: sans-serif;
+}
+.node-text {
+  fill: #666;
+  font-weight:bold;
+}
+text.edge-text {
+  fill: #888;
+  font-size: 8px;
+  text-anchor: middle;
 }
 svg text::selection {
     background: none;

@@ -1,0 +1,16 @@
+{
+  "name": "talk-memory-nodes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "budo src --serve bundle.js",
+    "build": "browserify src -o bundle.js -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "devDependencies": {
+    "crossroads": "0.12.2",
+    "hasher": "1.2.0"
+  }
+}

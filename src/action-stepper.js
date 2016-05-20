@@ -12,6 +12,10 @@ exports.addNode = function ({el, nodes, links}, node) {
     node.rename = ""
   }
 
+  if(nodes.find(({id}) => id === node)) {
+    throw new Error('A node already exists with that id')
+  }
+
   // Nodes tend to be funky with the force layout when incrementally added.
   // Place them near the center randomly to aid in the layout on the screen.
   if(node.x === undefined) {
@@ -29,19 +33,33 @@ exports.rename = function ({nodes, links}, [id, value]) {
   node.rename = value
 },
 
-exports.addLink = function ({nodes, links}, [sourceId, targetId, dashed]) {
-  const source = nodes.find(({id}) => id === sourceId)
-  const target = nodes.find(({id}) => id === targetId)
-  if(!source || !target) {
+exports.addLink = function ({nodes, links}, link) {
+  const {source, target, display, dashed} = link;
+  const sourceNode = typeof source === 'object'
+    ? source
+    : nodes.find(({id}) => id === source)
+  const targetNode = typeof source === 'object'
+    ? target
+    : nodes.find(({id}) => id === target)
+  if(!sourceNode || !targetNode) {
     throw new Error("Could not find those nodes to link.")
   }
-  links.push({source, target, dashed: Boolean(dashed)})
+  link.source = sourceNode
+  link.target = targetNode
+  if(link.rename) link.rename = ""
+  links.push(link)
 },
 
 exports.removeNode = function ({nodes, links}, id) {
   const node = nodes.find(n => n.id === id)
   if (!node) throw new Error("Could not find that node to remove.")
   nodes.splice(nodes.indexOf(node), 1)
+
+  const sources = links.filter(({source}) => source.id === id)
+  sources.forEach(source => links.splice(links.indexOf(source), 1))
+
+  const targets = links.filter(({_, target}) => target.id === id)
+  targets.forEach(target => links.splice(links.indexOf(target), 1))
 },
 
 exports.removeLink = function ({nodes, links}, [sourceId, targetId]) {
@@ -51,6 +69,15 @@ exports.removeLink = function ({nodes, links}, [sourceId, targetId]) {
   if (!link) throw new Error("Could not find that link to remove.")
   links.splice(links.indexOf(link), 1)
 }
+
+exports.renameLink = function ({nodes, links}, {source, target, display}) {
+  const link = links.find((b) => {
+    return b.source.id === source && b.target.id === target
+  })
+  if (!link) throw new Error("Could not find that link to remove.")
+  link.rename = display
+}
+
 
 exports.highlight = function ({editor}, value) {
 

@@ -1,15 +1,15 @@
 module.exports = [
   [
-    ["addNode", {name: "window", id: "window"}],
-    ["addNode", {name: "callStack", id: "callStack"}],
+    ["addNode", {type: "window", id: "window"}],
+    ["addNode", {type: "callStack", id: "callStack"}],
     ["addLink", ["window", "callStack", "dashed"]],
   ],
   [
-    ["addNode", {display: "createTenElements()", name: "function", id: "createTenElements()"}],
+    ["addNode", {display: "createTenElements()", type: "function", id: "createTenElements()"}],
     ["addLink", ["callStack", "createTenElements()"]],
   ],
   [
-    ["addNode", {name: "array", id: "array"}],
+    ["addNode", {type: "array", id: "array"}],
     ["addLink", ["createTenElements()", "array"]],
   ],
   [
