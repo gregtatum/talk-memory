@@ -20,7 +20,7 @@ exports.steps = [
   ],
   [
     ["addNode", {type: "value", id: "myNumber", display: "0"}],
-    ["addLink", {source: "window", target: "myNumber", display: "myNumber"}],
+    ["addLink", {source: "window", target: "myNumber", display: "myNumber", distance: 1.5}],
     ["highlight", 1],
   ],
   [
