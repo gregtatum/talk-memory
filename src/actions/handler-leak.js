@@ -34,9 +34,9 @@ exports.steps = [
   ],
   [
     // ["addLink", {source: "window", target: "callStack", dashed: true}],
-    ["addNode", {display: "frame", type: "function", id: "frame1"}],
-    ["addLink", {display: "ClickCounter", source: "callStack", target: "frame1"}],
-    ["addLink", {display: "this", source: "frame1", target: "clickCounter1"}],
+    ["addNode", {display: "scope", type: "function", id: "scope1"}],
+    ["addLink", {display: "ClickCounter", source: "callStack", target: "scope1"}],
+    ["addLink", {display: "this", source: "scope1", target: "clickCounter1"}],
     ["highlight", [2, 7]],
   ],
 
@@ -46,12 +46,12 @@ exports.steps = [
     ["highlight", ["2:3", "2:24"]],
   ],
   [
-    ["renameLink", {display: "this / scope", source: "frame1", target: "clickCounter1"}],
+    ["renameLink", {display: "this / scope", source: "scope1", target: "clickCounter1"}],
     ["highlight", ["4:3", "4:20"]],
   ],
   [
     ["addNode", {display: "fn", type: "function", id: "buttonClick1"}],
-    ["addLink", {source: "frame1", target: "buttonClick1"}],
+    ["addLink", {source: "scope1", target: "buttonClick1"}],
     ["highlight", ["5:21", "7:4"]],
   ],
   [
@@ -66,7 +66,7 @@ exports.steps = [
     ["removeNode", "countClicks1"]
   ],
   [
-    ["removeNode", "frame1"],
+    ["removeNode", "scope1"],
   ],
   [
     ["addLink", {display: "clickCounter1", source: "window", target: "clickCounter1", distance: 2}],

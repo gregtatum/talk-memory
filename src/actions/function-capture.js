@@ -35,7 +35,7 @@ exports.steps = [
   ],
   [
     // function block
-    ["addNode", {display: "frame", type: "function", id: "createLogger"}],
+    ["addNode", {display: "scope", type: "function", id: "createLogger"}],
     ["addLink", {source: "callStack", target: "createLogger", display: "createLogger"}],
     ["highlight", [2, 7]],
   ],

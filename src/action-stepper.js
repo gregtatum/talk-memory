@@ -42,7 +42,7 @@ exports.addLink = function ({nodes, links}, link) {
     ? target
     : nodes.find(({id}) => id === target)
   if(!sourceNode || !targetNode) {
-    throw new Error("Could not find those nodes to link.")
+    throw new Error(`Could not find those nodes to link. "${source}" to "${target}"`)
   }
   link.source = sourceNode
   link.target = targetNode

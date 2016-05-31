@@ -8,20 +8,20 @@ exports.code = `function createTenElements() {
   return array;
 }
 
-var myArray = createTenElements()
+var myArray = createTenElements();
 `
 
 exports.steps = [
   [
     ["addNode", {type: "window", id: "window"}],
     ["addNode", {type: "callStack", id: "callStack"}],
-    ["addLink", {source: "window", target: "callStack", dashed: true}],
+    // ["addLink", {source: "window", target: "callStack", dashed: true}],
   ],
   [
     ["highlight", [1, 9]]
   ],
   [
-    ["addNode", {display: "frame", type: "function", id: "createTenElements"}],
+    ["addNode", {display: "scope", type: "function", id: "createTenElements"}],
     ["addLink", {source: "callStack", target: "createTenElements", display: "createTenElements"}],
     ["highlight", ["11:15", "11:34"]]
   ],

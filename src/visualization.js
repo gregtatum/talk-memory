@@ -120,7 +120,7 @@ function addResizeListener (graph, force, el) {
 }
 
 function getNodeRadius (node) {
-  return 5 * SIZE[node.type]
+  return 5 * SIZE[node.type] * (node.radius || 1)
 }
 
 function updateView(graph) {
