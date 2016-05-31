@@ -102,9 +102,9 @@ exports.steps = [
     ["addLink", {source: "messages2", target: "string3"}],
   ],
   [
-    // bosunsLog("I'm in charge of equipment and crew.")
+    // bosunsLog("Swab the deck")
     ["highlight", 17],
-    ["addNode", {display: '"I\'m in charge..."', type: "value", id: "string4"}],
+    ["addNode", {display: '"Swab the deck..."', type: "value", id: "string4"}],
     ["addLink", {source: "messages2", target: "string4"}],
   ],
   [

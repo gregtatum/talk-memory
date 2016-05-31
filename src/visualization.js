@@ -16,8 +16,7 @@ module.exports = function start(demo) {
   addKeyboardListener(graph),
   addResizeListener(graph, graph.force, graph.el)
 
-  return () => {
-    console.log('destroying visualization')
+  return function destroyVisualization() {
     graph.destroy.forEach(fn => fn())
   }
 }
