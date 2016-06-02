@@ -23,16 +23,17 @@ crossroads.addRoute(/.*/, () => {
   console.log('main route')
   const container = document.querySelector('.node')
   container.innerHTML = `
-    <h1 class='title-header'>Understanding Memory in JavaScript</h1>
-    <p class='title-subheader'>by Greg Tatum</p>
+    <div class='main-titles'>
+      <h1 class='title-header'>Understanding Memory in JavaScript</h1>
+      <p class='title-subheader'>by Greg Tatum</p>
+    </div>
   `
-
   Object.keys(actions).forEach(key => {
     const div = document.createElement('div')
     div.innerHTML = `
       <a href='#/${key}' class='title-link'>${key}</a><br/>
     `
-    container.appendChild(div)
+    container.children[0].appendChild(div)
   })
   destroyPreviousVisualization()
   destroyPreviousVisualization = () => {

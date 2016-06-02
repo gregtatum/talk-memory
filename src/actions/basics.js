@@ -8,7 +8,7 @@ function myFunction() {
 
 myNumber = undefined;
 myObject = undefined;
-myFunction = undefined;
+delete window.myFunction;
 
 setTimeout(function() {
   myArray = undefined;

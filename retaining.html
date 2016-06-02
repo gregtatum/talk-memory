@@ -5,6 +5,17 @@
     <title>Retaining Path</title>
   </head>
   <body>
+    <h1>Retaining Paths Demo</h1>
+    <p>This page runs:</p>
+    <pre>
+&lt;script type="text/javascript"&gt;
+  var a = {};
+  a.b = {};
+  a.b.c = {};
+  a.b.c.d = {};
+  a.b.c.d.largeThing = new ArrayBuffer(100000);
+&lt;/script&gt;
+    </pre>
     <script type="text/javascript">
       var a = {};
       a.b = {};

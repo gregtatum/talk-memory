@@ -25,7 +25,7 @@ exports.steps = [
     ["highlight", 3],
   ],
   [
-    ["addNode", {display: "fn()", type: "object", id: "close"}],
+    ["addNode", {display: "myApp.close()", type: "object", id: "close"}],
     ["addLink", {source: "close", target: "myApp", display: "bind", distance: 2}],
     ["highlight", 6],
   ],
