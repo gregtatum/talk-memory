@@ -4,9 +4,11 @@ exports.code = `function createTenElements() {
   for(var i=0; i < 10; i++) {
     array[i] = i;
   }
+
+  return array;
 }
 
-createTenElements();
+var myArray = createTenElements();
 `
 
 exports.steps = [
@@ -16,12 +18,12 @@ exports.steps = [
     // ["addLink", {source: "window", target: "callStack", dashed: true}],
   ],
   [
-    ["highlight", [1, 7]]
+    ["highlight", [1, 9]]
   ],
   [
     ["addNode", {display: "scope", type: "function", id: "createTenElements"}],
     ["addLink", {source: "callStack", target: "createTenElements", display: "createTenElements"}],
-    ["highlight", 9]
+    ["highlight", ["11:15", "11:34"]]
   ],
   [
     ["addNode", {display: "[ ]", type: "array", id: "array"}],
@@ -52,19 +54,13 @@ exports.steps = [
     ["addLink", {display: "9", distance: 0.1, source: "array", target: "array-9"}],
   ],
   [
-    ["removeNode", "createTenElements"],
+    ["highlight", 8],
   ],
   [
-    ["removeNode", "array"],
-    ["removeNode", "array-0"],
-    ["removeNode", "array-1"],
-    ["removeNode", "array-2"],
-    ["removeNode", "array-3"],
-    ["removeNode", "array-4"],
-    ["removeNode", "array-5"],
-    ["removeNode", "array-6"],
-    ["removeNode", "array-7"],
-    ["removeNode", "array-8"],
-    ["removeNode", "array-9"],
+    ["removeNode", "createTenElements"],
+    // ["removeLink", ["callStack", "createTenElements"]],
+    // ["removeLink", ["createTenElements", "array"]],
+    ["addLink", {display: "myArray", source: "window", target: "array"}],
+    ["highlight", ["11:1", "11:12"]]
   ]
 ]

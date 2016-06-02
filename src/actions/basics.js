@@ -8,8 +8,11 @@ function myFunction() {
 
 myNumber = undefined;
 myObject = undefined;
-myArray = undefined;
 myFunction = undefined;
+
+setTimeout(function() {
+  myArray = undefined;
+}, 10000);
 `
 
 exports.lineLength = 60
@@ -57,12 +60,11 @@ exports.steps = [
     ["highlight", 10],
   ],
   [
-    ["removeLink", ["window", "myArray"]],
+    ["removeLink", ["window", "myFunction"]],
     ["highlight", 11],
   ],
   [
-    ["removeLink", ["window", "myFunction"]],
-    ["highlight", 12],
+    ["highlight", [13, 15]],
   ],
   [
     ["removeNode", "myNumber"],
@@ -71,14 +73,18 @@ exports.steps = [
     ["removeNode", "myObject"],
   ],
   [
+    ["removeNode", "myFunction"],
+  ],
+  [
+    ["removeLink", ["window", "myArray"]],
+    ["highlight", 14],
+  ],
+  [
     ["removeNode", "myArray"],
     ["removeNode", "array-a"],
     ["removeNode", "array-b"],
     ["removeNode", "array-c"],
     ["removeNode", "array-d"],
     ["removeNode", "array-e"],
-  ],
-  [
-    ["removeNode", "myFunction"],
   ],
 ]

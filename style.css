@@ -40,11 +40,12 @@ svg text::selection {
 }
 .node {
   left:0;
-  width:60%;
+  width:55%;
 }
 .editor {
-  left:60%;
-  width:40%;
+  left:55%;
+  width:45%;
+  font-size:11px;
 }
 .highlighted-line {
   background-color: #ff8;

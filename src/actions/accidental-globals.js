@@ -32,13 +32,15 @@ exports.steps = [
   [
     //var message = "Luke, I am your father.";
     ["highlight", 2],
-    ["addNode", {type: "value", display: "Luke, I am...", id: "message1"}],
+    ["addNode", {type: "value", display: "Luke, I am your father.", id: "message1"}],
     ["addLink", {source: "saySomething", target: "message1", display: "message", distance: 1.5}],
   ],
   [
-    ["removeNode", "message1"],
     ["removeNode", "saySomething"],
     ["highlight", [1,4]],
+  ],
+  [
+    ["removeNode", "message1"],
   ],
   [
     //whisperSomething();
@@ -49,7 +51,7 @@ exports.steps = [
   [
     //var message = "Luke, I am your father.";
     ["highlight", 7],
-    ["addNode", {type: "value", display: "I see dead...", id: "message2"}],
+    ["addNode", {type: "value", display: "I see dead people.", id: "message2"}],
     ["addLink", {source: "window", target: "message2", display: "message", distance: 1.5}],
     ["addLink", {source: "whisperSomething", target: "message2", display: "window.message", distance: 2.5, dashed: true}],
   ],
@@ -66,8 +68,13 @@ exports.steps = [
   [
     //var message = "Luke, I am your father.";
     ["highlight", 12],
-    ["rename", ["message2", "I sound..."]],
-    ["addLink", {source: "shoutSomething", target: "message2", display: "window.message", distance: 2.5, dashed: true}],
+    ["addNode", {type: "value", display: "I sound my barbaric yawp.", id: "message3"}],
+    ["addLink", {source: "shoutSomething", target: "message3", display: "window.message", distance: 2.5, dashed: true}],
+    ["removeLink", ["window", "message2"]],
+    ["addLink", {source: "window", target: "message3", display: "message", distance: 1.5}],
+  ],
+  [
+    ["removeNode", "message2"],
   ],
   [
     ["removeNode", "shoutSomething"],

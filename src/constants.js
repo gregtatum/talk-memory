@@ -5,6 +5,7 @@ exports.GROUP = Object.freeze({
   function: 3,
   value: 4,
   callStack: 5,
+  Map: 6,
 })
 
 exports.SIZE = Object.freeze({
@@ -13,6 +14,7 @@ exports.SIZE = Object.freeze({
   function: 3,
   array: 2,
   object: 2,
+  Map: 2,
   value: 1
 })
 
@@ -22,5 +24,6 @@ exports.LENGTH = Object.freeze({
   function: 10,
   array: 2,
   object: 2,
+  Map: 2,
   value: 0.3
 })

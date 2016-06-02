@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Retaining Path</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var a = {};
+      a.b = {};
+      a.b.c = {};
+      a.b.c.d = {};
+      a.b.c.d.largeThing = new ArrayBuffer(100000);
+    </script>
+  </body>
+</html>

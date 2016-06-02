@@ -37,10 +37,10 @@ exports.steps = [
   [
     ["addNode", {type: "window", id: "window"}],
     ["addNode", {type: "callStack", id: "callStack"}],
-  ],
-  [
+  // ],
+  // [
     // var cache = Map();
-    ["addNode", {type: "object", display: "Map", id: "cache"}],
+    ["addNode", {type: "Map", display: "Map", id: "cache"}],
     ["addLink", {source: "window", target: "cache", display: "cache"}],
     ["highlight", 1],
   ],
@@ -111,7 +111,7 @@ exports.steps = [
   //------------------------------------------------------
   // Comment Box 2
   [
-    // getFancyEditor(elB)
+    // getFancyEditor(elA)
     ["highlight", ["20:19", "20:38"]],
     ["addNode", {type: "function", display: "scope", id: "scope2"}],
     ["addLink", {source: "callStack", target: "scope2", display: "getFancyEditor"}],
@@ -135,7 +135,7 @@ exports.steps = [
     ["highlight", 7]
   ],
   [
-    // var commentBox1 = getFancyEditor(elA);
+    // var commentBox2 = getFancyEditor(elA);
     ["highlight", 20],
     ["removeNode", "scope2"],
     ["renameLink", {source: "window", target: "fancyEditor1", display: "commentBox1/2", distance: 2.5}],
@@ -152,6 +152,7 @@ exports.steps = [
     ["addLink", {source: "window", target: "fancyEditor2", display: "commentBox3/4", distance: 2.5}],
     ["highlight", [22, 23]],
   ],
+
   [
     //commentBox1/2 = undefined;
     ["removeLink", ["window", "fancyEditor1"]],
@@ -165,5 +166,6 @@ exports.steps = [
   [
     ["removeLink", ["window", "elA"]],
     ["removeLink", ["window", "elB"]],
+    ["highlight", [30, 33]],
   ],
 ]
