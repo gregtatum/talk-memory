@@ -1,9 +1,8 @@
 body {
-  padding-top:0px;
-  padding-left:0px;
-  padding-bottom:0px;
-  padding-right:0px;
-
+  /*padding-top:0px;
+  padding-left:16px;
+  padding-bottom:11px;
+  padding-right:18px;*/
   width: 100%;
   height: 100%;
   position: absolute;
@@ -23,7 +22,7 @@ body {
 }
 .link {
   user-select: none;
-  stroke: #ccc;
+  stroke: #999;
 }
 
 .node text {
@@ -35,7 +34,7 @@ body {
   font-weight:bold;
 }
 text.edge-text {
-  fill: #888;
+  fill: #000;
   font-size: 8px;
   text-anchor: middle;
 }

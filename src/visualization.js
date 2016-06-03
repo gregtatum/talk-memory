@@ -40,7 +40,7 @@ function MemoryGraph({steps, lineLength}) {
         .attr("refY", "6")
         .append("path")
           .attr("d", "M2,2 L2,11 L10,6 L2,2")
-          .style("fill", "#ccc")
+          .style("fill", "#999")
 
 
   this.color = d3.scale.category20()
